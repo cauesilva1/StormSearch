@@ -44,7 +44,7 @@ export default function Home() {
     setUf(state);
     setCidade(responseCityJson.localidade);
 
-    const apiWeaterURl = `http://api.openweathermap.org/geo/1.0/direct?q=${state}&limit=1&appid=${process.env.NEXT_PUBLIC_API_WEATHER_KEY}&lang=pt_br`;
+    const apiWeaterURl = `https://api.openweathermap.org/geo/1.0/direct?q=${state}&limit=1&appid=${process.env.NEXT_PUBLIC_API_WEATHER_KEY}&lang=pt_br`;
 
     const responseWeather = await fetch(apiWeaterURl);
     const responseWeatherJson = await responseWeather.json();
