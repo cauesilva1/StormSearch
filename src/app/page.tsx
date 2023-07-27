@@ -107,7 +107,7 @@ export default function Home() {
 
       <div className="flex justify-center items-center flex-col space-y-4 rounded-xl p-3 mb-20 mt-10">
 
-        { (cidade && clima && temp) && 
+        { (cidade && clima && temp && icon) && 
 
         <Card className="p-9 flex flex-col justify-center items-center bg-slate-400/70 border-none gap-3">
 
