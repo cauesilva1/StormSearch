@@ -13,6 +13,7 @@ import { useState } from "react";
 
 import { states } from "@/utils/state";
 import Image from "next/image";
+import { informationtemp } from "@/server/weather";
 
 export default function Home() {
   const [cep, setCep] = useState("");
@@ -32,11 +33,8 @@ export default function Home() {
   }
 
   async function handleSubmit() {
-    const response = {
-      cep,
-    };
-
-    const cepSearch = `https://viacep.com.br/ws/${response.cep}/json/`;
+    
+    const cepSearch = `https://viacep.com.br/ws/${cep}/json/`;
 
     const responseCity = await fetch(cepSearch);
     const responseCityJson = await responseCity.json();
@@ -46,31 +44,11 @@ export default function Home() {
     setUf(state);
     setCidade(responseCityJson.localidade);
 
-    const apiWeaterURl = `https://api.openweathermap.org/geo/1.0/direct?q=${state}&limit=1&appid=${process.env.NEXT_PUBLIC_API_WEATHER_KEY}&lang=pt_br`;
+    const response = await informationtemp(state)
 
-    const responseWeather = await fetch(apiWeaterURl);
-    const responseWeatherJson = await responseWeather.json();
-
-    const lat = responseWeatherJson[0].lat;
-    const lon = responseWeatherJson[0].lon;
-
-    const weather = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=${process.env.NEXT_PUBLIC_API_WEATHER_KEY}&lang=pt_br`;
-
-    const responseWeatherlocal = await fetch(weather);
-
-    const responseWeatherlocalJson = await responseWeatherlocal.json()
-
-    const temp = String(parseInt(responseWeatherlocalJson.main.temp)) + "°C";
-    const descriptiontemp = responseWeatherlocalJson.weather[0].description;
-
-    const iconTemp = responseWeatherlocalJson.weather[0].icon;
-    const iconUrl = `https://openweathermap.org/img/wn/${iconTemp}.png`;
-
-    console.log(iconUrl);
-
-    setIcon(iconUrl);
-    setTemp(temp);
-    setClima(descriptiontemp);
+    setIcon(response.iconUrl);
+    setTemp(response.temp);
+    setClima(response.descriptiontemp);
 
   }
 
