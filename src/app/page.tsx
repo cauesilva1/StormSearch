@@ -12,6 +12,7 @@ import {
 import { useState } from "react";
 
 import { states } from "@/utils/state";
+import Image from "next/image";
 
 export default function Home() {
   const [cep, setCep] = useState("");
@@ -20,6 +21,7 @@ export default function Home() {
 
   const [clima, setClima] = useState("");
   const [temp, setTemp] = useState("");
+  const [icon, setIcon] = useState("");
 
 
 
@@ -61,6 +63,12 @@ export default function Home() {
     const temp = String(parseInt(responseWeatherlocalJson.main.temp)) + "°C";
     const descriptiontemp = responseWeatherlocalJson.weather[0].description;
 
+    const iconTemp = responseWeatherlocalJson.weather[0].icon;
+    const iconUrl = `https://openweathermap.org/img/wn/${iconTemp}.png`;
+
+    console.log(iconUrl);
+
+    setIcon(iconUrl);
     setTemp(temp);
     setClima(descriptiontemp);
 
@@ -101,13 +109,13 @@ export default function Home() {
 
         { (cidade && clima && temp) && 
 
-        <Card className="p-10 flex flex-col justify-center items-center bg-slate-400/70 border-none gap-3">
+        <Card className="p-9 flex flex-col justify-center items-center bg-slate-400/70 border-none gap-3">
 
           <CardTitle>
             {cidade}
           </CardTitle>
 
-          <CardContent>{clima}</CardContent>
+          <CardContent className="flex flex-row p-4 justify-center items-center">{clima}  <Image src={icon} alt={"IconTemp"} width={50} height={50}/></CardContent>
 
           <CardFooter>{temp}</CardFooter>
 
